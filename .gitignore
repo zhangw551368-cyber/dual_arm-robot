@@ -1,0 +1,34 @@
+# Catkin build products
+/build/
+/devel/
+/install/
+/log/
+/.catkin_tools/
+/.catkin_workspace
+
+# ROS and Gazebo runtime files
+/.ros/
+*.bag
+*.bag.active
+*.db3
+*.log
+*.pyc
+__pycache__/
+
+# Editor and OS files
+/.vscode/
+/.idea/
+*~
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Large/generated local artifacts
+*.tar
+*.tar.gz
+*.zip
+*.7z
+*.rar
+core
+core.*
