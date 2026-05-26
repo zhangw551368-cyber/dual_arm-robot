@@ -1,5 +1,5 @@
 controller_list:
-- name: left_arm_joint_traj_controller
+- name: left_arm/scaled_pos_joint_traj_controller
   action_ns: follow_joint_trajectory
   type: FollowJointTrajectory
   joints:
@@ -10,7 +10,7 @@ controller_list:
     - left_arm_wrist_2_joint
     - left_arm_wrist_3_joint
 
-- name: right_arm_joint_traj_controller
+- name: right_arm/scaled_pos_joint_traj_controller
   action_ns: follow_joint_trajectory
   type: FollowJointTrajectory
   joints:

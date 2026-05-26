@@ -28,17 +28,12 @@ Gazebo + MoveIt 联合仿真使用 ur3_dual_gazebo.xacro
 
 ```bash
 cd /home/xiaoai/gzu_ws
+command -v conda >/dev/null 2>&1 && conda deactivate || true
 source /opt/ros/noetic/setup.bash
 source devel/setup.bash
 ```
 
-如果之前手册里写了：
-
-```bash
-conda deactivate
-```
-
-但你的终端提示 `conda: command not found`，直接跳过即可。这台机器没有 conda，不影响 ROS 仿真。
+`command -v conda ...` 这一行表示“如果当前机器有 conda，就退出 conda 环境；没有 conda 就跳过”。这样可以避免 conda 的 Qt/Python 库影响 RViz、MoveIt。
 
 ## 2. 一键清理旧仿真
 
@@ -338,6 +333,8 @@ roslaunch ur3_dual_moveit_config demo_gazebo.launch \
 5. 轨迹预览合理后，点击 `Execute`，Gazebo 中机械臂会跟着运动。
 6. 单臂正常后，再选 `both_arm` 做双臂联合规划。
 
+注意：`Plan` 只是在 RViz 里生成橙色/半透明的轨迹预览，不会把目标发送给 Gazebo 控制器。只有点击 `Execute` 或 `Plan & Execute`，Gazebo 里的机械臂才会真正运动。
+
 执行前建议把速度调低：
 
 ```text
@@ -354,7 +351,7 @@ roslaunch ur3_dual_moveit_config demo_gazebo.launch \
   rviz_config:=/home/xiaoai/gzu_ws/src/ur3_dual_moveit_config/launch/gazebo_robot_model.rviz
 ```
 
-它更接近真实机器人，但排错也更复杂。初学阶段如果只想学路径规划，优先用 `demo.launch`；如果只想学 Gazebo 控制，优先用 `ur_description ur3_dual_gazebo.launch`。
+这个轻量配置只显示模型，没有路径规划面板。初学阶段如果只想学路径规划，优先用 `demo.launch`；如果只想学 Gazebo 控制，优先用 `ur_description ur3_dual_gazebo.launch`；如果要验证“MoveIt 执行到 Gazebo”，用 `demo_gazebo.launch`。
 
 ## 10.1 用脚本验证 Gazebo + MoveIt 执行
 
