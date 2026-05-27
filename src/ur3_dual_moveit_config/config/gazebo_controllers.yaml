@@ -12,6 +12,16 @@ left_arm_joint_traj_controller:
     - left_arm_wrist_1_joint
     - left_arm_wrist_2_joint
     - left_arm_wrist_3_joint
+  constraints:
+    goal_time: 3.0
+    stopped_velocity_tolerance: 2.0
+    left_arm_shoulder_pan_joint: {trajectory: 0.5, goal: 0.3}
+    left_arm_shoulder_lift_joint: {trajectory: 0.5, goal: 0.3}
+    left_arm_elbow_joint: {trajectory: 0.5, goal: 0.3}
+    left_arm_wrist_1_joint: {trajectory: 0.5, goal: 0.3}
+    left_arm_wrist_2_joint: {trajectory: 0.5, goal: 0.3}
+    left_arm_wrist_3_joint: {trajectory: 0.5, goal: 0.3}
+  stop_trajectory_duration: 0.5
 
 right_arm_joint_traj_controller:
   type: position_controllers/JointTrajectoryController
@@ -22,18 +32,13 @@ right_arm_joint_traj_controller:
     - right_arm_wrist_1_joint
     - right_arm_wrist_2_joint
     - right_arm_wrist_3_joint
-
-gazebo_ros_control:
-  pid_gains:
-    left_arm_shoulder_pan_joint: {p: 1000.0, i: 0.01, d: 10.0}
-    left_arm_shoulder_lift_joint: {p: 1000.0, i: 0.01, d: 10.0}
-    left_arm_elbow_joint: {p: 1000.0, i: 0.01, d: 10.0}
-    left_arm_wrist_1_joint: {p: 200.0, i: 0.01, d: 2.0}
-    left_arm_wrist_2_joint: {p: 200.0, i: 0.01, d: 2.0}
-    left_arm_wrist_3_joint: {p: 200.0, i: 0.01, d: 2.0}
-    right_arm_shoulder_pan_joint: {p: 1000.0, i: 0.01, d: 10.0}
-    right_arm_shoulder_lift_joint: {p: 1000.0, i: 0.01, d: 10.0}
-    right_arm_elbow_joint: {p: 1000.0, i: 0.01, d: 10.0}
-    right_arm_wrist_1_joint: {p: 200.0, i: 0.01, d: 2.0}
-    right_arm_wrist_2_joint: {p: 200.0, i: 0.01, d: 2.0}
-    right_arm_wrist_3_joint: {p: 200.0, i: 0.01, d: 2.0}
+  constraints:
+    goal_time: 3.0
+    stopped_velocity_tolerance: 2.0
+    right_arm_shoulder_pan_joint: {trajectory: 0.5, goal: 0.3}
+    right_arm_shoulder_lift_joint: {trajectory: 0.5, goal: 0.3}
+    right_arm_elbow_joint: {trajectory: 0.5, goal: 0.3}
+    right_arm_wrist_1_joint: {trajectory: 0.5, goal: 0.3}
+    right_arm_wrist_2_joint: {trajectory: 0.5, goal: 0.3}
+    right_arm_wrist_3_joint: {trajectory: 0.5, goal: 0.3}
+  stop_trajectory_duration: 0.5

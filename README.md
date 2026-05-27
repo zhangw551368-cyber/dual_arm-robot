@@ -26,6 +26,8 @@ source devel/setup.bash
 | Gazebo 关节控制脚本 | `rosrun ur_description send_ur3_dual_pose.py --pose home --duration 4` |
 | 双 UR3 实机驱动 | `roslaunch ur_robot_driver ur3_dual_bringup.launch` |
 
+`demo_gazebo.launch` 默认使用无重力 Gazebo 世界，并在控制器启动后自动发送一次对称 `home` 姿态。RViz 中 `Plan` 只显示预览，必须点击 `Execute` 或 `Plan & Execute`，Gazebo 里的机械臂才会同步运动。
+
 ## 关键目录
 
 | 路径 | 作用 |
@@ -56,7 +58,7 @@ right_arm_joint_traj_controller
 
 1. 仿真优先用 `roslaunch ur3_dual_moveit_config demo_gazebo.launch`。
 2. 实机 MoveIt 使用 `move_group.launch` + `moveit_rviz.launch`，控制器映射在 `src/ur3_dual_moveit_config/config/ur3_dual_controllers_moveit.yaml`。
-3. RViz 里 `Plan` 只是规划预览，只有点击 `Execute` 或 `Plan & Execute` 才会把轨迹发给 Gazebo/真实控制器。
+3. 如果 Gazebo 没跟着 RViz 执行，先检查 `/move_group/controller_list` 是否指向上面的两个 Gazebo action controller。
 
 ## 文档
 

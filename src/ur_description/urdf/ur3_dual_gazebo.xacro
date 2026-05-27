@@ -26,12 +26,6 @@
         <mesh filename="package://ur_description/meshes/base.stl" />
       </geometry>
     </visual>
-    <collision>
-      <origin xyz="0 0 0" rpy="0 0 0" />
-      <geometry>
-        <mesh filename="package://ur_description/meshes/base.stl" />
-      </geometry>
-    </collision>
    </link>
    <joint name="base_left" type="fixed">
      <parent link="base" />

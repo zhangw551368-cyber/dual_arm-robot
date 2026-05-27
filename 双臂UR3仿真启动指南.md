@@ -310,6 +310,10 @@ roslaunch ur3_dual_moveit_config demo_gazebo.launch
 3. RViz
 4. `left_arm_joint_traj_controller` 和 `right_arm_joint_traj_controller`
 
+当前联合仿真默认使用 `src/ur3_dual_moveit_config/worlds/dual_ur3_no_gravity.world`。这个世界关闭重力，适合先验证 MoveIt 到 Gazebo 的执行链路。启动后会自动发送一次 `home` 姿态，让两只 UR3 进入对称初始状态。
+
+启动时 Gazebo 可能打印 `No p gain specified for pid`，这是当前教学仿真刻意不使用 PID 力矩追踪造成的提示。只要控制器是 `running`，并且 `Plan & Execute` 后 Gazebo 会动，就可以忽略。
+
 RViz 打开后，左侧应该能看到：
 
 ```text
@@ -334,6 +338,21 @@ roslaunch ur3_dual_moveit_config demo_gazebo.launch \
 6. 单臂正常后，再选 `both_arm` 做双臂联合规划。
 
 注意：`Plan` 只是在 RViz 里生成橙色/半透明的轨迹预览，不会把目标发送给 Gazebo 控制器。只有点击 `Execute` 或 `Plan & Execute`，Gazebo 里的机械臂才会真正运动。
+
+如果你点了 `Execute` 但 Gazebo 没动，先不要反复拖目标点，按下面顺序确认：
+
+```bash
+rosservice call /controller_manager/list_controllers "{}"
+rosparam get /move_group/controller_list
+rostopic echo -n 1 /joint_states
+```
+
+`/move_group/controller_list` 里必须是 `left_arm_joint_traj_controller` 和 `right_arm_joint_traj_controller`，不是 fake controller。`/joint_states` 中速度应接近 0，初始关节应接近下面这组对称值：
+
+```text
+left:  shoulder_pan= 1.2, shoulder_lift=-1.0, elbow=1.4, wrist_1=-1.4, wrist_2=-1.57, wrist_3=0.0
+right: shoulder_pan=-1.2, shoulder_lift=-1.0, elbow=1.4, wrist_1=-1.4, wrist_2= 1.57, wrist_3=0.0
+```
 
 如果 `Plan & Execute` 显示 `Failed`，先在终端检查控制器和 action 是否存在：
 
@@ -391,10 +410,11 @@ CONTROL_FAILED
 GOAL_TOLERANCE_VIOLATED
 ```
 
-通常是 Gazebo 物理仿真里的关节抖动或腕关节角度绕到 `+-2pi` 附近导致，不是 RViz 显示问题。先把速度和加速度比例降到 `0.05` 到 `0.10`，并优先测试单臂 `left_arm` / `right_arm`。确认 Gazebo 控制器本身能动，可以运行：
+通常是 Gazebo 物理仿真里的关节抖动、启动时未回到 `home`，或腕关节角度绕到 `+-2pi` 附近导致，不是 RViz 显示问题。先把速度和加速度比例降到 `0.05` 到 `0.10`，并优先测试单臂 `left_arm` / `right_arm`。确认 Gazebo 控制器本身能动，可以运行：
 
 ```bash
 rosrun ur_description send_ur3_dual_pose.py --pose ready --duration 5
+rosrun ur_description send_ur3_dual_pose.py --pose home --duration 3
 ```
 
 ## 11. 常见问题
@@ -427,6 +447,8 @@ source /home/xiaoai/gzu_ws/devel/setup.bash
 ```
 
 ### 11.4 Gazebo 里模型乱动或下坠
+
+联合仿真入口 `ur3_dual_moveit_config demo_gazebo.launch` 已默认使用无重力世界，并且 Gazebo 专用模型的红色基座只保留视觉、不参与碰撞。这样可以避免基座碰撞体把机械臂顶开，导致“蹦跳”或执行失败。
 
 先确认控制器是 running：
 
