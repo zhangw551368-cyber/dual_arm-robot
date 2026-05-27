@@ -17,7 +17,8 @@
   <include file="$(dirname)/demo.launch" pass_all_args="true">
     <!-- robot_description is loaded by gazebo.launch, to enable Gazebo features -->
     <arg name="load_robot_description" value="false" />
-    <arg name="moveit_controller_manager" value="ros_control" />
+    <arg name="moveit_controller_manager" value="simple" />
+    <arg name="moveit_controller_config" value="$(find ur3_dual_moveit_config)/config/ur3_dual_controllers_gazebo.yaml" />
     <arg name="rviz_config" value="$(arg rviz_config)" />
   </include>
 </launch>

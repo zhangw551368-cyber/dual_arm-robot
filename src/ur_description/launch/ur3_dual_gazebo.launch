@@ -1,16 +1,16 @@
 <?xml version="1.0"?>
 
 <launch>
-  <arg name="left_shoulder_pan" default="0.0"/>
-  <arg name="left_shoulder_lift" default="-1.2"/>
+  <arg name="left_shoulder_pan" default="1.2"/>
+  <arg name="left_shoulder_lift" default="-1.0"/>
   <arg name="left_elbow" default="1.4"/>
-  <arg name="left_wrist_1" default="-1.2"/>
+  <arg name="left_wrist_1" default="-1.4"/>
   <arg name="left_wrist_2" default="-1.57"/>
   <arg name="left_wrist_3" default="0.0"/>
-  <arg name="right_shoulder_pan" default="0.0"/>
-  <arg name="right_shoulder_lift" default="-1.2"/>
+  <arg name="right_shoulder_pan" default="-1.2"/>
+  <arg name="right_shoulder_lift" default="-1.0"/>
   <arg name="right_elbow" default="1.4"/>
-  <arg name="right_wrist_1" default="-1.2"/>
+  <arg name="right_wrist_1" default="-1.4"/>
   <arg name="right_wrist_2" default="1.57"/>
   <arg name="right_wrist_3" default="0.0"/>
 

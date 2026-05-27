@@ -38,7 +38,7 @@ source devel/setup.bash
 
 ## 控制器说明
 
-Gazebo 联合仿真使用 `ros_control` controller manager，控制器为：
+Gazebo 联合仿真会显式把 MoveIt 连接到下面两个 Gazebo action controller：
 
 ```text
 left_arm_joint_traj_controller

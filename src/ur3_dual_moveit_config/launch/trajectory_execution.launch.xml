@@ -3,6 +3,7 @@
 
   <!-- Define moveit controller manager plugin: fake, simple, or ros_control -->
   <arg name="moveit_controller_manager" />
+  <arg name="moveit_controller_config" default="$(find ur3_dual_moveit_config)/config/ur3_dual_controllers_moveit.yaml" />
   <arg name="fake_execution_type" default="interpolate" />
 
   <!-- Flag indicating whether MoveIt is allowed to load/unload  or switch controllers -->

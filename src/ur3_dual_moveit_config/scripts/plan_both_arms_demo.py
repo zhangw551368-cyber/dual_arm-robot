@@ -9,15 +9,15 @@ import rospy
 
 POSES = {
     "home": {
-        "left_arm_shoulder_pan_joint": 0.8,
+        "left_arm_shoulder_pan_joint": 1.2,
         "left_arm_shoulder_lift_joint": -1.0,
-        "left_arm_elbow_joint": 1.3,
+        "left_arm_elbow_joint": 1.4,
         "left_arm_wrist_1_joint": -1.4,
         "left_arm_wrist_2_joint": -1.57,
         "left_arm_wrist_3_joint": 0.0,
-        "right_arm_shoulder_pan_joint": -0.8,
+        "right_arm_shoulder_pan_joint": -1.2,
         "right_arm_shoulder_lift_joint": -1.0,
-        "right_arm_elbow_joint": 1.3,
+        "right_arm_elbow_joint": 1.4,
         "right_arm_wrist_1_joint": -1.4,
         "right_arm_wrist_2_joint": 1.57,
         "right_arm_wrist_3_joint": 0.0,

@@ -156,15 +156,15 @@ src/ur_description/launch/ur3_dual_gazebo.launch
 默认启动位姿：
 
 ```text
-left_arm:  shoulder_pan= 0.8, shoulder_lift=-1.0, elbow=1.3, wrist_1=-1.4, wrist_2=-1.57, wrist_3=0.0
-right_arm: shoulder_pan=-0.8, shoulder_lift=-1.0, elbow=1.3, wrist_1=-1.4, wrist_2= 1.57, wrist_3=0.0
+left_arm:  shoulder_pan= 1.2, shoulder_lift=-1.0, elbow=1.4, wrist_1=-1.4, wrist_2=-1.57, wrist_3=0.0
+right_arm: shoulder_pan=-1.2, shoulder_lift=-1.0, elbow=1.4, wrist_1=-1.4, wrist_2= 1.57, wrist_3=0.0
 ```
 
 它通过 `spawn_model` 的 `-J` 参数设置：
 
 ```text
--J left_arm_shoulder_pan_joint 0.8
--J right_arm_shoulder_pan_joint -0.8
+-J left_arm_shoulder_pan_joint 1.2
+-J right_arm_shoulder_pan_joint -1.2
 ```
 
 临时修改某个初始角，可以这样启动：
@@ -289,7 +289,7 @@ rosrun ur3_dual_moveit_config plan_both_arms_demo.py
 
 ## 10. Gazebo + MoveIt 联合仿真：Plan 并 Execute
 
-这是现在推荐的主入口。它会同时启动 Gazebo、MoveIt、RViz 和 ros_control 控制器，RViz 默认加载带 `MotionPlanning` 面板的配置，可以直接 `Plan` 和 `Execute`。
+这是现在推荐的主入口。它会同时启动 Gazebo、MoveIt、RViz 和 Gazebo 轨迹控制器，RViz 默认加载带 `MotionPlanning` 面板的配置，可以直接 `Plan` 和 `Execute`。
 
 ```bash
 cd /home/xiaoai/gzu_ws
@@ -308,7 +308,7 @@ roslaunch ur3_dual_moveit_config demo_gazebo.launch
 1. Gazebo
 2. MoveIt `move_group`
 3. RViz
-4. ros_control 控制器
+4. `left_arm_joint_traj_controller` 和 `right_arm_joint_traj_controller`
 
 RViz 打开后，左侧应该能看到：
 
@@ -334,6 +334,22 @@ roslaunch ur3_dual_moveit_config demo_gazebo.launch \
 6. 单臂正常后，再选 `both_arm` 做双臂联合规划。
 
 注意：`Plan` 只是在 RViz 里生成橙色/半透明的轨迹预览，不会把目标发送给 Gazebo 控制器。只有点击 `Execute` 或 `Plan & Execute`，Gazebo 里的机械臂才会真正运动。
+
+如果 `Plan & Execute` 显示 `Failed`，先在终端检查控制器和 action 是否存在：
+
+```bash
+rosservice call /controller_manager/list_controllers "{}"
+rostopic list | grep follow_joint_trajectory
+```
+
+应该能看到：
+
+```text
+left_arm_joint_traj_controller
+right_arm_joint_traj_controller
+/left_arm_joint_traj_controller/follow_joint_trajectory/...
+/right_arm_joint_traj_controller/follow_joint_trajectory/...
+```
 
 执行前建议把速度调低：
 

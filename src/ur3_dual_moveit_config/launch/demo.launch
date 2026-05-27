@@ -16,6 +16,7 @@
 
   <!-- Choose controller manager: fake, simple, or ros_control -->
   <arg name="moveit_controller_manager" default="fake" />
+  <arg name="moveit_controller_config" default="$(find ur3_dual_moveit_config)/config/ur3_dual_controllers_moveit.yaml" />
   <!-- Set execution mode for fake execution controllers -->
   <arg name="fake_execution_type" default="interpolate" />
 
@@ -46,6 +47,7 @@
   <include file="$(dirname)/move_group.launch">
     <arg name="allow_trajectory_execution" value="true"/>
     <arg name="moveit_controller_manager" value="$(arg moveit_controller_manager)" />
+    <arg name="moveit_controller_config" value="$(arg moveit_controller_config)" />
     <arg name="fake_execution_type" value="$(arg fake_execution_type)"/>
     <arg name="info" value="true"/>
     <arg name="debug" value="$(arg debug)"/>
