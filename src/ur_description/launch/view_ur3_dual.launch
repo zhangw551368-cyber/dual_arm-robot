@@ -1,8 +1,15 @@
 <?xml version="1.0"?>
 <launch>
-  <include file="$(find ur_description)/launch/load_ur3_dual.launch"/>
+  <arg name="rviz_config" default="$(find ur_description)/cfg/view_ur3_dual.rviz"/>
+
+  <!-- Use the Gazebo-ready dual UR3 model here as well. It is the model verified
+       to render reliably in RViz and keeps this view-only launch consistent with
+       the Gazebo + MoveIt demo. -->
+  <include file="$(find ur_description)/launch/load_ur3_dual_gazebo.launch">
+    <arg name="transmission_hw_interface" value="hardware_interface/PositionJointInterface"/>
+  </include>
 
   <node name="joint_state_publisher_gui" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" />
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
-  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find ur_description)/cfg/view_ur3_dual.rviz" required="true" />
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rviz_config)" required="true" />
 </launch>

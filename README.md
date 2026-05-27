@@ -18,7 +18,7 @@ source devel/setup.bash
 
 | 目标 | 命令 |
 | --- | --- |
-| RViz 只看双臂模型 | `roslaunch ur_description view_ur3_dual.launch` |
+| RViz 只看双臂本体模型 | `roslaunch ur_description view_ur3_dual.launch` |
 | Gazebo 只看双臂本体 | `roslaunch ur_description ur3_dual_gazebo.launch` |
 | MoveIt 假执行规划 | `roslaunch ur3_dual_moveit_config demo.launch` |
 | Gazebo + MoveIt 联合仿真 | `LIBGL_ALWAYS_SOFTWARE=1 roslaunch ur3_dual_moveit_config demo_gazebo.launch` |

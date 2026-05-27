@@ -59,8 +59,8 @@ pkill -x move_group || true
 
 | 文件 | 用途 | 说明 |
 | --- | --- | --- |
-| `src/ur_description/urdf/ur3_dual.xacro` | RViz / MoveIt | 带双 UR3 和 Robotiq 夹爪 |
-| `src/ur_description/urdf/ur3_dual_gazebo.xacro` | Gazebo / Gazebo+MoveIt | 双 UR3 本体物理仿真，不带夹爪，控制更稳定 |
+| `src/ur_description/urdf/ur3_dual.xacro` | MoveIt 完整模型 | 带双 UR3 和 Robotiq 夹爪 |
+| `src/ur_description/urdf/ur3_dual_gazebo.xacro` | RViz 只看模型 / Gazebo / Gazebo+MoveIt | 双 UR3 本体，不带夹爪，显示和控制更稳定 |
 
 不要直接裸运行 `ur3_dual.xacro`，因为它需要 `robot_model:=ur3` 参数。正确方式是通过 launch 启动。
 
@@ -89,7 +89,7 @@ roslaunch ur_description view_ur3_dual.launch
 
 正常会打开两个窗口：
 
-1. RViz：显示双臂 UR3 和夹爪。
+1. RViz：显示双臂 UR3 本体。
 2. Joint State Publisher GUI：关节滑块。
 
 在滑块窗口拖动关节，RViz 中模型会跟着动。
@@ -100,10 +100,10 @@ roslaunch ur_description view_ur3_dual.launch
 2. `Global Options -> Fixed Frame` 必须是 `base`。
 3. `RobotModel -> Robot Description` 必须是 `robot_description`。
 4. `RobotModel -> Visual Enabled` 勾选。
-5. `RobotModel -> Collision Enabled` 可勾选，能看到更明显的碰撞模型。
+5. `RobotModel -> Collision Enabled` 建议先不要勾选，只看视觉模型。
 6. 用鼠标滚轮缩放，或者右侧 Views 面板点 `Zero`。
 
-之前你 RViz 看不到，主要原因是旧配置使用了单臂常见的 `base_link`，但双臂模型根坐标是 `base`。另外 MoveIt 的彩色圆环只是末端交互标记，不等于机器人本体，RViz 还必须有 `RobotModel` 显示项。
+这条命令现在和 Gazebo 联合仿真一样，加载 `ur3_dual_gazebo.xacro`。它只用于确认双 UR3 本体、TF 和关节滑块，夹爪调试请看真实机器人使用手册中的 Robotiq 章节。之前 RViz 看不到，主要原因是旧的 view-only 入口加载了带夹爪的完整模型和碰撞显示，显示不如 Gazebo 专用模型稳定。
 
 ## 5. Gazebo 只看双臂本体
 
