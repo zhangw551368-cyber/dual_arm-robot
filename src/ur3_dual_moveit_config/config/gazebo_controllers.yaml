@@ -3,6 +3,21 @@ joint_state_controller:
   type: joint_state_controller/JointStateController
   publish_rate: 50
 
+gazebo_ros_control:
+  pid_gains:
+    left_arm_shoulder_pan_joint: {p: 4000.0, i: 0.0, d: 100.0}
+    left_arm_shoulder_lift_joint: {p: 6000.0, i: 0.0, d: 120.0}
+    left_arm_elbow_joint: {p: 2500.0, i: 0.0, d: 60.0}
+    left_arm_wrist_1_joint: {p: 800.0, i: 0.0, d: 20.0}
+    left_arm_wrist_2_joint: {p: 800.0, i: 0.0, d: 20.0}
+    left_arm_wrist_3_joint: {p: 200.0, i: 0.0, d: 5.0}
+    right_arm_shoulder_pan_joint: {p: 4000.0, i: 0.0, d: 100.0}
+    right_arm_shoulder_lift_joint: {p: 6000.0, i: 0.0, d: 120.0}
+    right_arm_elbow_joint: {p: 2500.0, i: 0.0, d: 60.0}
+    right_arm_wrist_1_joint: {p: 800.0, i: 0.0, d: 20.0}
+    right_arm_wrist_2_joint: {p: 800.0, i: 0.0, d: 20.0}
+    right_arm_wrist_3_joint: {p: 200.0, i: 0.0, d: 5.0}
+
 left_arm_joint_traj_controller:
   type: position_controllers/JointTrajectoryController
   joints:

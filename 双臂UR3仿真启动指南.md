@@ -330,7 +330,7 @@ roslaunch ur3_dual_moveit_config demo_gazebo.launch
 
 当前联合仿真默认使用 `src/ur3_dual_moveit_config/worlds/dual_ur3_no_gravity.world`。这个世界关闭重力，适合先验证 MoveIt 到 Gazebo 的执行链路。启动后会自动发送一次 `home` 姿态，让两只 UR3 进入对称初始状态。
 
-启动时 Gazebo 可能打印 `No p gain specified for pid`，这是当前教学仿真刻意不使用 PID 力矩追踪造成的提示。只要控制器是 `running`，并且 `Plan & Execute` 后 Gazebo 会动，就可以忽略。
+启动时如果看到 `Link 'left_xxx_finger' is not known to URDF`，这是因为 MoveIt 的 SRDF 里保留了 Robotiq 夹爪碰撞忽略项，而当前稳定 Gazebo 模型只保留双 UR3 本体，不加载夹爪。这类警告不影响双臂本体规划和执行。
 
 RViz 打开后，左侧应该能看到：
 
@@ -434,6 +434,42 @@ GOAL_TOLERANCE_VIOLATED
 rosrun ur_description send_ur3_dual_pose.py --pose ready --duration 5
 rosrun ur_description send_ur3_dual_pose.py --pose home --duration 3
 ```
+
+## 10.2 双臂端托盘 demo
+
+用途：先做“两个 UR3 协同端着一个托盘移动”的教学仿真，不先碰真实夹爪接触物理。
+
+原理：
+
+1. `demo_gazebo.launch` 启动 Gazebo、MoveIt、控制器和 RViz。
+2. `carry_tray_demo.py` 用 `/gazebo/spawn_sdf_model` 生成一个蓝色薄托盘。
+3. 脚本直接给左右 `JointTrajectoryController` 发送关节轨迹。
+4. 机械臂执行轨迹时，脚本用 `/gazebo/set_model_state` 让托盘跟随移动。
+
+启动联合仿真：
+
+```bash
+cd /home/xiaoai/gzu_ws
+source devel/setup.bash
+LIBGL_ALWAYS_SOFTWARE=1 roslaunch ur3_dual_moveit_config demo_gazebo.launch
+```
+
+另开终端运行端托盘 demo：
+
+```bash
+cd /home/xiaoai/gzu_ws
+source devel/setup.bash
+rosrun ur3_dual_moveit_config carry_tray_demo.py
+```
+
+预期现象：
+
+1. Gazebo 中出现 `dual_ur3_tray` 蓝色托盘。
+2. 双臂从 `home` 到 `support`。
+3. 双臂移动到 `carry`。
+4. 双臂回到 `support` 和 `home`。
+
+注意：这是第一版“协同搬运演示”，托盘只作为 Gazebo 中的可视化模型和同步移动对象，没有加入 MoveIt 碰撞场景，也不走 RRT 规划。托盘不是靠真实摩擦被夹住，而是脚本同步更新托盘位姿。这样做的目的，是先把双臂协同动作、Gazebo 控制器和托盘可视化跑通。真正夹爪抓取需要再加入 Robotiq 物理模型、夹爪控制器、MoveIt 抓取场景和 attach/detach 或 grasp plugin。
 
 ## 11. 常见问题
 
