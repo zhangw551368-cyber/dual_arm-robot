@@ -26,6 +26,8 @@ source devel/setup.bash
 | Gazebo 关节控制脚本 | `rosrun ur_description send_ur3_dual_pose.py --pose home --duration 4` |
 | 双 UR3 实机驱动 | `roslaunch ur_robot_driver ur3_dual_bringup.launch` |
 
+`view_ur3_dual.launch` 是只看模型的轻量入口，不启动 Gazebo/MoveIt；它会在 RViz 节点内部设置 `LIBGL_ALWAYS_SOFTWARE=1`，避免 WSLg 下出现只显示网格、不显示 RobotModel 的 OpenGL 渲染问题。
+
 `demo_gazebo.launch` 默认使用无重力 Gazebo 世界，并在控制器启动后自动发送一次对称 `home` 姿态。RViz 中 `Plan` 只显示预览，必须点击 `Execute` 或 `Plan & Execute`，Gazebo 里的机械臂才会同步运动。
 
 ## 关键目录

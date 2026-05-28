@@ -79,6 +79,8 @@ check_urdf /tmp/ur3_dual.urdf
 
 用途：只确认模型、TF、关节滑块，不做路径规划。
 
+这个入口会自动给 RViz 设置 `LIBGL_ALWAYS_SOFTWARE=1`。在 WSLg / Ubuntu 20.04 中，如果不强制软件渲染，可能出现“网格正常、RobotModel 不显示”的情况；你之前能显示的 `demo_gazebo.launch` 也是靠这个环境变量稳定渲染的。
+
 启动：
 
 ```bash
@@ -97,13 +99,29 @@ roslaunch ur_description view_ur3_dual.launch
 如果 RViz 看不到机械臂：
 
 1. 左侧 Displays 里确认有 `RobotModel`。
-2. `Global Options -> Fixed Frame` 必须是 `base`。
+2. `Global Options -> Fixed Frame` 必须是 `world`。
 3. `RobotModel -> Robot Description` 必须是 `robot_description`。
 4. `RobotModel -> Visual Enabled` 勾选。
 5. `RobotModel -> Collision Enabled` 建议先不要勾选，只看视觉模型。
 6. 用鼠标滚轮缩放，或者右侧 Views 面板点 `Zero`。
 
 这条命令现在和 Gazebo 联合仿真一样，加载 `ur3_dual_gazebo.xacro`。它只用于确认双 UR3 本体、TF 和关节滑块，夹爪调试请看真实机器人使用手册中的 Robotiq 章节。之前 RViz 看不到，主要原因是旧的 view-only 入口加载了带夹爪的完整模型和碰撞显示，显示不如 Gazebo 专用模型稳定。
+
+如果仍然只看到网格，先完整清理旧进程再启动：
+
+```bash
+pkill -x rviz || true
+pkill -x roslaunch || true
+pkill -x rosmaster || true
+pkill -x joint_state_publisher_gui || true
+pkill -x robot_state_publisher || true
+
+cd /home/xiaoai/gzu_ws
+source devel/setup.bash
+roslaunch ur_description view_ur3_dual.launch
+```
+
+注意：这个入口只看模型，不带 `MotionPlanning` 面板，也不会启动 Gazebo。要做路径规划并让 Gazebo 同步执行，请用第 10 节的 `demo_gazebo.launch`。
 
 ## 5. Gazebo 只看双臂本体
 
@@ -424,8 +442,14 @@ rosrun ur_description send_ur3_dual_pose.py --pose home --duration 3
 彩色圆环是 MoveIt 交互标记。确认 Displays 中有 `RobotModel`，并且：
 
 ```text
-Fixed Frame = base
+Fixed Frame = world
 Robot Description = robot_description
+```
+
+如果是 `view_ur3_dual.launch` 只看模型入口，它已经在 launch 内部强制设置 `LIBGL_ALWAYS_SOFTWARE=1`。如果你手动开 RViz，也要这样启动：
+
+```bash
+LIBGL_ALWAYS_SOFTWARE=1 rviz -d /home/xiaoai/gzu_ws/src/ur_description/cfg/view_ur3_dual.rviz
 ```
 
 ### 11.2 `move_group` 找不到
